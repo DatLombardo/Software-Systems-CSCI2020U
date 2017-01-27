@@ -1,0 +1,2 @@
+build.gradle
+  apply plugin: 'java'
