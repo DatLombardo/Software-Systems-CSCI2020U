@@ -20,43 +20,12 @@ import java.net.URLClassLoader;
 public class Main extends Application {
     private Stage window;
     private BorderPane layout;
-    private TableView<Student> table;
-    private TextField sidField, fnameField, lnameField, gpaField;
+    private TableView<StudentRecord> table;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("JavaFX Demo");
-
-        /* create the menu (for the top of the user interface) */
-        Menu fileMenu = new Menu("File");
-        MenuItem newMenuItem = new MenuItem("New", imageFile("images/new.png"));
-        newMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+N"));
-        fileMenu.getItems().add(newMenuItem);
-        fileMenu.getItems().add(new SeparatorMenuItem());
-        fileMenu.getItems().add(new MenuItem("Open...", imageFile("images/open.png")));
-        fileMenu.getItems().add(new SeparatorMenuItem());
-        fileMenu.getItems().add(new MenuItem("Save", imageFile("images/save.png")));
-        fileMenu.getItems().add(new MenuItem("Save As...", imageFile("images/save_as.png")));
-        fileMenu.getItems().add(new SeparatorMenuItem());
-        MenuItem exitMenuItem = new MenuItem("Exit", imageFile("images/exit.png"));
-        fileMenu.getItems().add(exitMenuItem);
-        exitMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
-        exitMenuItem.setOnAction( e -> System.exit(0) );
-
-        Menu editMenu = new Menu("Edit");
-        editMenu.getItems().add(new MenuItem("Cut", imageFile("images/cut.png")));
-        editMenu.getItems().add(new MenuItem("Copy", imageFile("images/copy.png")));
-        editMenu.getItems().add(new MenuItem("Paste", imageFile("images/paste.png")));
-
-        Menu helpMenu = new Menu("Help");
-        helpMenu.getItems().add(new MenuItem("About...", imageFile("images/about.png")));
-        helpMenu.getItems().add(new SeparatorMenuItem());
-        helpMenu.getItems().add(new MenuItem("Help...", imageFile("images/help.png")));
-
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().add(fileMenu);
-        menuBar.getMenus().add(editMenu);
-        menuBar.getMenus().add(helpMenu);
+        primaryStage.setTitle("Lab 05 : Student Records");
 
         /* create the table (for the center of the user interface) */
         table = new TableView<>();
@@ -73,19 +42,11 @@ public class Main extends Application {
         firstNameColumn = new TableColumn<>("First Name");
         firstNameColumn.setMinWidth(200);
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        firstNameColumn.setCellFactory(TextFieldTableCell.<Student>forTableColumn());
+        firstNameColumn.setCellFactory(TextFieldTableCell.<StudentRecord>forTableColumn());
         firstNameColumn.setOnEditCommit((CellEditEvent<Student, String> event) -> {
             ((Student)event.getTableView().getItems().get(event.getTablePosition().getRow())).setFirstName(event.getNewValue());
         });
 
-        TableColumn<Student,String> lastNameColumn = null;
-        lastNameColumn = new TableColumn<>("Last Name");
-        lastNameColumn.setMinWidth(200);
-        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        lastNameColumn.setCellFactory(TextFieldTableCell.<Student>forTableColumn());
-        lastNameColumn.setOnEditCommit((CellEditEvent<Student, String> event) -> {
-            ((Student)event.getTableView().getItems().get(event.getTablePosition().getRow())).setLastName(event.getNewValue());
-        });
 
         TableColumn<Student,Double> gpaColumn = null;
         gpaColumn = new TableColumn<>("GPA");
@@ -93,8 +54,6 @@ public class Main extends Application {
         gpaColumn.setCellValueFactory(new PropertyValueFactory<>("gpa"));
 
         table.getColumns().add(sidColumn);
-        table.getColumns().add(lastNameColumn);
-        table.getColumns().add(firstNameColumn);
         table.getColumns().add(gpaColumn);
 
         /* create an edit form (for the bottom of the user interface) */
