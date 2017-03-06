@@ -4,7 +4,10 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Created by michael on 03/03/17.
+ * @author: Michael Lombardo
+ * @date: 03/03/2017
+ * @project: CSCI 2020U Assignment 1
+ * @file: Training.java
  */
 public class Training {
     public HashMap<String,Integer> globalCount;
@@ -29,7 +32,7 @@ public class Training {
         Scanner scanner = new Scanner(file);
         fileCount = new HashMap<>();
         while (scanner.hasNext()) {
-            String word = scanner.next().toLowerCase();
+            String word = scanner.next().toLowerCase(); //add to lowercase
             countWord(word);
         }
         Iterator itr = fileCount.entrySet().iterator();

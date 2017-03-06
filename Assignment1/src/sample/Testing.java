@@ -2,17 +2,20 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.io.*;
 import java.util.*;
 
 /**
- * Created by michael on 05/03/17.
+ * @author: Michael Lombardo
+ * @date: 03/03/2017
+ * @project: CSCI 2020U Assignment 1
+ * @file: Testing.java
  */
 public class Testing {
     public ObservableList<TestFile> testData = FXCollections.observableArrayList();
-    public Testing(File[] listOfFiles, HashMap<String, Double> wordMap) throws IOException{
-        CalculateProb(listOfFiles, wordMap);
+    public Testing(File[] listOfSpam, File[] listOfHam, HashMap<String, Double> wordMap) throws IOException{
+        CalculateProb(listOfSpam, wordMap);
+        CalculateProb(listOfHam, wordMap);
     }
     private void CalculateProb(File[] listOfFiles, HashMap<String, Double> wordMap) throws IOException {
         for (File file : listOfFiles) {
@@ -23,12 +26,10 @@ public class Testing {
             }
 
             double total = 0;
-
             FileReader fileReader = new FileReader(file);
             Scanner scanner = new Scanner(fileReader);
             while (scanner.hasNext()) {
                 String word = scanner.next().toLowerCase();
-                //if (word.matches(WORD_REGEX)) {
                     if (wordMap.containsKey(word)) {
                         double wordSpamProbability = wordMap.get(word);
                         if (wordSpamProbability > 0.0f && wordSpamProbability < 1.0f) {
@@ -36,14 +37,13 @@ public class Testing {
                                     - Math.log(wordSpamProbability);
                         }
                     }
-                //}
             }
             fileReader.close();
-            String guessClass;
+            String guessClass = actualClass;
             double spamProbability = 1 / (1 + Math.pow(Math.E, total));
-            if (spamProbability > 0.5){
+            if (spamProbability >= 0.5){
                 guessClass = "Spam";
-            }else{
+            }else if(spamProbability < 0.5) {
                 guessClass = "Ham";
             }
             TestFile testFile = new TestFile(path, spamProbability, guessClass, actualClass);

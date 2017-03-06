@@ -1,12 +1,13 @@
 package sample;
 
-/**
- * Created by michael on 03/03/17.
- */
-
 import java.text.DecimalFormat;
 
-//Used for output
+/**
+ * @author: Michael Lombardo
+ * @date: 03/03/2017
+ * @project: CSCI 2020U Assignment 1
+ * @file: TestFile.java
+ */
 public class TestFile {
     private String filename;
     private double spamProbability;
@@ -32,7 +33,7 @@ public class TestFile {
     public String getFilename() { return this.filename; }
     public double getSpamProbability() { return this.spamProbability; }
     public String getSpamProbRounded() {
-        DecimalFormat df = new DecimalFormat("0.00000");
+        DecimalFormat df = new DecimalFormat("0.000000");
         return df.format(this.spamProbability);
     }
     public String getActualClass() { return this.actualClass; }
