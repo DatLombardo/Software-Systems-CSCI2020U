@@ -1,5 +1,8 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.io.*;
 import java.util.*;
 
@@ -7,20 +10,19 @@ import java.util.*;
  * Created by michael on 05/03/17.
  */
 public class Testing {
-    public List<TestFile> testData = new ArrayList<>();
-    public Testing(File[] listOfFiles, Map<String, Double> wordMap) throws IOException{
+    public ObservableList<TestFile> testData = FXCollections.observableArrayList();
+    public Testing(File[] listOfFiles, HashMap<String, Double> wordMap) throws IOException{
         CalculateProb(listOfFiles, wordMap);
     }
-    private void CalculateProb(File[] listOfFiles, Map<String, Double> wordMap) throws IOException {
+    private void CalculateProb(File[] listOfFiles, HashMap<String, Double> wordMap) throws IOException {
         for (File file : listOfFiles) {
             String path = file.getPath();
-
             String actualClass = "Ham";
             if (path.contains("spam")) {
                 actualClass = "Spam";
             }
 
-            double sum = 0;
+            double total = 0;
 
             FileReader fileReader = new FileReader(file);
             Scanner scanner = new Scanner(fileReader);
@@ -30,16 +32,21 @@ public class Testing {
                     if (wordMap.containsKey(word)) {
                         double wordSpamProbability = wordMap.get(word);
                         if (wordSpamProbability > 0.0f && wordSpamProbability < 1.0f) {
-                            sum += Math.log(1 - wordSpamProbability)
+                            total += Math.log(1 - wordSpamProbability)
                                     - Math.log(wordSpamProbability);
                         }
                     }
                 //}
             }
             fileReader.close();
-
-            double spamProbability = 1 / (1 + Math.pow(Math.E, sum));
-            TestFile testFile = new TestFile(path, spamProbability, actualClass);
+            String guessClass;
+            double spamProbability = 1 / (1 + Math.pow(Math.E, total));
+            if (spamProbability > 0.5){
+                guessClass = "Spam";
+            }else{
+                guessClass = "Ham";
+            }
+            TestFile testFile = new TestFile(path, spamProbability, guessClass, actualClass);
             testData.add(testFile);
         }
     }

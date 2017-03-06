@@ -4,6 +4,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
@@ -17,15 +22,8 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class Main extends Application {
-    public void listFilesForFolder(final File folder) {
-        for (final File fileEntry : folder.listFiles()) {
-            if (fileEntry.isDirectory()) {
-                listFilesForFolder(fileEntry);
-            } else {
-                System.out.println(fileEntry.getName());
-            }
-        }
-    }
+    private TableView<TestFile> table;
+    private BorderPane layout;
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
@@ -72,30 +70,81 @@ public class Main extends Application {
         DirectoryChooser directoryChooserT = new DirectoryChooser();
         directoryChooserT.setInitialDirectory(new File("."));
         File mainDirectoryT = directoryChooserT.showDialog(primaryStage);
-        File folderT = new File(mainDirectoryS.getPath());
-        File[] listOfFilesT = folderS.listFiles();
+        File folderT = new File(mainDirectoryT.getPath());
+        File[] listOfFilesT = folderT.listFiles();
 
         Testing test = new Testing(listOfFilesT, spamGivWord);
-        System.out.println(test.testData.get(1).getFilename() + "Spew" + test.testData.get(1).getSpamProbRounded());
 
+        table = new TableView<>();
+        table.setItems(test.testData);
+        table.setEditable(true);
+        
+        TableColumn<TestFile,String> fileColumn = null;
+        fileColumn = new TableColumn<>("File Name");
+        fileColumn.setMinWidth(350);
+        fileColumn.setCellValueFactory(new PropertyValueFactory<>("filename"));
+        fileColumn.setCellFactory(TextFieldTableCell.<TestFile>forTableColumn());
+        //May be able to remove below
+        fileColumn.setOnEditCommit((TableColumn.CellEditEvent<TestFile, String> event) -> {
+            ((TestFile)event.getTableView().getItems().get(event.getTablePosition().getRow())).setFilename(event.getNewValue());
+        });
 
+        TableColumn<TestFile,String> classColumn = null;
+        classColumn = new TableColumn<>("Actual Class");
+        classColumn.setMinWidth(100);
+        classColumn.setCellValueFactory(new PropertyValueFactory<>("actualClass"));
+        classColumn.setCellFactory(TextFieldTableCell.<TestFile>forTableColumn());
+        //May be able to remove below
+        classColumn.setOnEditCommit((TableColumn.CellEditEvent<TestFile, String> event) -> {
+            ((TestFile)event.getTableView().getItems().get(event.getTablePosition().getRow())).setActualClass(event.getNewValue());
+        });
 
+        TableColumn<TestFile,String> probColumn = null;
+        probColumn = new TableColumn<>("Spam Probability");
+        probColumn.setMinWidth(100);
+        probColumn.setCellValueFactory(new PropertyValueFactory<>("probRounded"));
+        probColumn.setCellFactory(TextFieldTableCell.<TestFile>forTableColumn());
+        //May be able to remove below
+        probColumn.setOnEditCommit((TableColumn.CellEditEvent<TestFile, String> event) -> {
+            ((TestFile)event.getTableView().getItems().get(event.getTablePosition().getRow())).setActualClass(event.getNewValue());
+        });
 
+        TableColumn<TestFile,String> guessColumn = null;
+        guessColumn = new TableColumn<>("Guess Class");
+        guessColumn.setMinWidth(100);
+        guessColumn.setCellValueFactory(new PropertyValueFactory<>("guessClass"));
+        guessColumn.setCellFactory(TextFieldTableCell.<TestFile>forTableColumn());
+        //May be able to remove below
+        guessColumn.setOnEditCommit((TableColumn.CellEditEvent<TestFile, String> event) -> {
+            ((TestFile)event.getTableView().getItems().get(event.getTablePosition().getRow())).setActualClass(event.getNewValue());
+        });
 
+        table.getColumns().add(fileColumn);
+        table.getColumns().add(classColumn);
+        table.getColumns().add(probColumn);
+        table.getColumns().add(guessColumn);
+
+        //Presicion and Accuracy
+        double correctGuesses = 0.0;
+        double wrongGuesses = 0.0;
+        for (int i = 0; i < test.testData.size(); i++) {
+            correctGuesses = correctGuesses + test.testData.get(i).getCorrectGuess();
+            if (test.testData.get(i).getCorrectGuess() == 0){
+                wrongGuesses = wrongGuesses + 1;
+
+            }
+        }
+        double precision = correctGuesses/test.testData.size();
+        double accuracy = correctGuesses / (wrongGuesses+correctGuesses);
+
+        System.out.println("Precision: + " + precision);
+        System.out.println("Accuracy: + " + accuracy);
 /////////////////////////////////////////// /////Outputs
         System.out.println(mainDirectoryS.getPath());
-        /*for (HashMap.Entry<String, Double> entry : spamGivWord.entrySet()) {
-            System.out.println(entry.getKey()+" : "+entry.getValue());
-        }*/
-        System.out.println(spamFreq.globalCount.size());
-        System.out.println(hamFreq.globalCount.size());
-
-
-        System.out.println(mainDirectoryS.getPath());
-        //final File folder = new File(mainDirectory.getPath());
-        //listFilesForFolder(folder);
-
-        primaryStage.setScene(new Scene(root, 300, 275));
+        System.out.println(mainDirectoryH.getPath());
+        layout = new BorderPane();
+        layout.setCenter(table);
+        primaryStage.setScene(new Scene(layout, 700, 675));
         primaryStage.show();
     }
 
