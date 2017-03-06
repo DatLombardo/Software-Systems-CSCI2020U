@@ -30,29 +30,24 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("Spam Buster 9999");
 
-
-        System.out.println("Select Train Spam");
-        DirectoryChooser directoryChooserS = new DirectoryChooser();
-        directoryChooserS.setInitialDirectory(new File("."));
-        File mainDirectoryS = directoryChooserS.showDialog(primaryStage);
-        File folderS = new File(mainDirectoryS.getPath());
+        System.out.println("Select Data folder");
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setInitialDirectory(new File("."));
+        File mainDirectory = directoryChooser.showDialog(primaryStage);
+        System.out.println("Processing Training...");
+        File folderS = new File(mainDirectory.getPath()+"/train/spam");
         File[] listOfFilesS = folderS.listFiles();
         //Buffer the spam and ham frequency maps
         Training spamFreq = new Training(listOfFilesS, true);
-        
-        System.out.println("Select Train Ham");
-        DirectoryChooser directoryChooserH1 = new DirectoryChooser();
-        directoryChooserH1.setInitialDirectory(new File("."));
-        File mainDirectoryH1 = directoryChooserH1.showDialog(primaryStage);
-        File folderHam1 = new File(mainDirectoryH1.getPath());
+
+        File folderHam1 = new File(mainDirectory.getPath()+"/train/ham");
         File[] listOfFilesH1 = folderHam1.listFiles();
+
         Training hamFreq1 = new Training(listOfFilesH1, false);
 
-        DirectoryChooser directoryChooserH2 = new DirectoryChooser();
-        directoryChooserH2.setInitialDirectory(new File("."));
-        File mainDirectoryH = directoryChooserH2.showDialog(primaryStage);
-        File folderHam2 = new File(mainDirectoryH.getPath());
+        File folderHam2 = new File(mainDirectory.getPath()+"/train/ham2");
         File[] listOfFilesH2 = folderHam2.listFiles();
+
         Training hamFreq2 = new Training(listOfFilesH2, false);
 
 
@@ -85,27 +80,20 @@ public class Main extends Application {
             it.remove();
         }
 ////////////////////////////////////////////////// Testing
-        System.out.println("Select Test Spam File");
-        DirectoryChooser directoryChooserTS = new DirectoryChooser();
-        directoryChooserTS.setInitialDirectory(new File("."));
-        File mainDirectoryTS = directoryChooserTS.showDialog(primaryStage);
-        File folderTS = new File(mainDirectoryTS.getPath());
+        File folderTS = new File(mainDirectory.getPath()+"/test/spam");
         File[] listOfFilesTS = folderTS.listFiles();
 
-        System.out.println("Select Test Ham File");
-        DirectoryChooser directoryChooserTH = new DirectoryChooser();
-        directoryChooserTH.setInitialDirectory(new File("."));
-        File mainDirectoryTH = directoryChooserTH.showDialog(primaryStage);
-        File folderTH = new File(mainDirectoryTH.getPath());
+
+        File folderTH = new File(mainDirectory.getPath()+"/test/ham");
         File[] listOfFilesTH = folderTH.listFiles();
 
         Testing test = new Testing(listOfFilesTS, listOfFilesTH, spamGivWord);
+        System.out.println("Processing Testing...");
 
         table = new TableView<>();
         table.setItems(test.testData);
         table.setEditable(true);
-
-
+        
         TableColumn<TestFile,String> fileColumn = null;
         fileColumn = new TableColumn<>("File Name");
         fileColumn.setMinWidth(300);
@@ -156,10 +144,6 @@ public class Main extends Application {
         Label prec = new Label("Precision: " + precision + "\n\nAccuracy:  " + accuracy);
 
 /////////////////////////////////////////// /////Outputs
-        System.out.println(mainDirectoryS.getPath());
-        System.out.println(mainDirectoryH.getPath());
-        System.out.println(mainDirectoryTS.getPath());
-        System.out.println(mainDirectoryTH.getPath());
         layout = new BorderPane();
         layout.setCenter(table);
         layout.setBottom(prec);

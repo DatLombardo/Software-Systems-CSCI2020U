@@ -18,7 +18,6 @@ public class Training {
 
 
     public Training(File[] listOfFiles, boolean isSpam) throws IOException {
-        System.out.println("Processing");
         globalCount = new HashMap<>();
         if(isSpam){spamLength = listOfFiles.length;}
         else{hamLength = listOfFiles.length;}
