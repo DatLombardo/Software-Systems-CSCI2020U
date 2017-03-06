@@ -15,14 +15,14 @@ public class Training {
 
 
     public Training(File[] listOfFiles, boolean isSpam) throws IOException {
+        System.out.println("Processing");
         globalCount = new HashMap<>();
         if(isSpam){spamLength = listOfFiles.length;}
         else{hamLength = listOfFiles.length;}
         for (int i = 0; i < listOfFiles.length; i++) {
-            System.out.println(i);
             processFile(listOfFiles[i]);
         }
-        processProb(globalCount, isSpam);
+        genereateProb(globalCount, isSpam);
     }
     //Count and create a map for the file, then add to global map.
     public void processFile(File file) throws IOException {
@@ -32,16 +32,16 @@ public class Training {
             String word = scanner.next().toLowerCase();
             countWord(word);
         }
-        Iterator it = fileCount.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
+        Iterator itr = fileCount.entrySet().iterator();
+        while (itr.hasNext()) {
+            Map.Entry pair = (Map.Entry)itr.next();
             if(!globalCount.containsKey(pair.getKey())){
                 globalCount.put(pair.getKey().toString(),1);
             }else{
                 int oldCount = globalCount.get(pair.getKey());
                 globalCount.put(pair.getKey().toString(), oldCount+1);
             }
-            it.remove();
+            itr.remove();
         }
     }
     private void countWord(String word) {
@@ -54,18 +54,16 @@ public class Training {
             fileCount.put(word, 1);
         }
     }
-
-    public void processProb(HashMap<String, Integer> dataSet, boolean isSpam) throws IOException {
-        Set<String> keys = dataSet.keySet();
+    //Calculate Probabilties for W|S and W|H
+    public void genereateProb(HashMap<String, Integer> dataSet, boolean isSpam) throws IOException {
+        Set<String> dataKeys = dataSet.keySet();
         wordGivProb = new HashMap<>();
-        Iterator<String> keyIterator = keys.iterator();
-        while (keyIterator.hasNext()) {
-            String key = keyIterator.next();
+        Iterator<String> itr = dataKeys.iterator();
+        while (itr.hasNext()) {
+            String key = itr.next();
             int count = dataSet.get(key);
             if(isSpam) wordGivProb.put(key, (count / (double)spamLength));
             if(!isSpam) wordGivProb.put(key, (count / (double)hamLength));
         }
     }
-
-
 }
