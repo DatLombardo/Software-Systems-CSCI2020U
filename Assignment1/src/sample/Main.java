@@ -11,6 +11,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.stream.Stream;
 
 public class Main extends Application {
@@ -30,18 +31,39 @@ public class Main extends Application {
 
 
         TestFile testData = new TestFile("Filename", 0.5, "Spam");
-   ;
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setInitialDirectory(new File("."));
-        File mainDirectory = directoryChooser.showDialog(primaryStage);
 
-        File folder = new File(mainDirectory.getPath());
-        File[] listOfFiles = folder.listFiles();
+        System.out.println("Select Spam");
+        DirectoryChooser directoryChooserS = new DirectoryChooser();
+        directoryChooserS.setInitialDirectory(new File("."));
+        File mainDirectoryS = directoryChooserS.showDialog(primaryStage);
 
-        Training train = new Training(listOfFiles);
+        File folderS = new File(mainDirectoryS.getPath());
+        File[] listOfFiles = folderS.listFiles();
+        //Buffer the spam and ham frequency maps
+        Training spamFreq = new Training(listOfFiles, true);
+
+        System.out.println("Select Ham");
+        DirectoryChooser directoryChooserH = new DirectoryChooser();
+        directoryChooserH.setInitialDirectory(new File("."));
+        File mainDirectoryH = directoryChooserH.showDialog(primaryStage);
+
+        File folderHam = new File(mainDirectoryH.getPath());
+        File[] listOfFilesHam = folderHam.listFiles();
+        Training hamFreq = new Training(listOfFilesHam, false);
+
+
+
+        //Outputs
+        System.out.println(listOfFiles.length);
+        System.out.println(mainDirectoryS.getPath());
+        for (HashMap.Entry<String, Double> entry : spamFreq.wordGivProb.entrySet()) {
+            System.out.println(entry.getKey()+" : "+entry.getValue());
+        }
+        System.out.println(spamFreq.globalCount.size());
+
 
         System.out.println(listOfFiles.length);
-        System.out.println(mainDirectory.getPath());
+        System.out.println(mainDirectoryS.getPath());
         //final File folder = new File(mainDirectory.getPath());
         //listFilesForFolder(folder);
 

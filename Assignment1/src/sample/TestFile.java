@@ -6,7 +6,7 @@ package sample;
 
 import java.text.DecimalFormat;
 
-
+//Used for output
 public class TestFile {
     private String filename;
     private double spamProbability;
