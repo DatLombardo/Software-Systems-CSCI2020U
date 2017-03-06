@@ -93,7 +93,7 @@ public class Main extends Application {
         table = new TableView<>();
         table.setItems(test.testData);
         table.setEditable(true);
-        
+
         TableColumn<TestFile,String> fileColumn = null;
         fileColumn = new TableColumn<>("File Name");
         fileColumn.setMinWidth(300);
@@ -127,7 +127,7 @@ public class Main extends Application {
         table.getColumns().add(probColumn);
         table.getColumns().add(guessColumn);
 
-        //Presicion and Accuracy
+        //Precision and Accuracy
         double correctGuesses = 0.0;
         double wrongGuesses = 0.0;
         for (int i = 0; i < test.testData.size(); i++) {
@@ -137,13 +137,22 @@ public class Main extends Application {
 
             }
         }
-        double precision = correctGuesses/test.testData.size();
-        double accuracy = correctGuesses / (wrongGuesses+correctGuesses);
+        double accuracy = correctGuesses/test.testData.size();
 
-
+        correctGuesses = 0.0;
+        wrongGuesses = 0.0;
+        for (int i = 0; i < test.testData.size(); i++){
+            if (test.testData.get(i).getActualClass() == "Spam"){
+                if (test.testData.get(i).getCorrectGuess() == 1){
+                    correctGuesses = correctGuesses + 1;
+                }else{
+                    wrongGuesses = wrongGuesses + 1;
+                }
+            }
+        }
+        double precision = correctGuesses / (wrongGuesses+correctGuesses);
         Label prec = new Label("Precision: " + precision + "\n\nAccuracy:  " + accuracy);
 
-/////////////////////////////////////////// /////Outputs
         layout = new BorderPane();
         layout.setCenter(table);
         layout.setBottom(prec);
