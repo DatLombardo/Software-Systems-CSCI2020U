@@ -52,8 +52,10 @@ public class Testing {
             Scanner scanner = new Scanner(fileReader);
             while (scanner.hasNext()) {
                 String word = scanner.next().toLowerCase();
+                    //Find if word exists in wordmap, if not it's irrelevant.
                     if (wordMap.containsKey(word)) {
                         double wordSpamProbability = wordMap.get(word);
+                        //Apply Naive Bayes, log caluclation
                         if (wordSpamProbability > 0.0f && wordSpamProbability < 1.0f) {
                             total += Math.log(1 - wordSpamProbability)
                                     - Math.log(wordSpamProbability);
@@ -62,12 +64,15 @@ public class Testing {
             }
             fileReader.close();
             String guessClass = actualClass;
+            //Sum running total of Naive Baye
             double spamProbability = 1 / (1 + Math.pow(Math.E, total));
+            //General guess
             if (spamProbability >= 0.5){
                 guessClass = "Spam";
             }else if(spamProbability < 0.5) {
                 guessClass = "Ham";
             }
+            //Add file with calculated probabilities to the full testData set.
             TestFile testFile = new TestFile(path, spamProbability, guessClass, actualClass);
             testData.add(testFile);
         }
