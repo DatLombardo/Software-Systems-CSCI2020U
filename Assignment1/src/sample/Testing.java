@@ -11,12 +11,34 @@ import java.util.*;
  * @project: CSCI 2020U Assignment 1
  * @file: Testing.java
  */
+
+/**
+ * Computes the TestFile word map with probabilities for the interface
+ */
 public class Testing {
     public ObservableList<TestFile> testData = FXCollections.observableArrayList();
+
+    /**
+     * General Constructor for Testing, directly calls Calculate prob with the spam and ham file lists.
+     * creates one ArrayList over both spam and ham file lists.
+     *
+     * @param listOfSpam Folder of the files in testing/spam
+     * @param listOfHam Folder of the files in testing/ham
+     * @param wordMap Word Map of spam words, and their probabilities of being spam
+     * @throws IOException
+     */
     public Testing(File[] listOfSpam, File[] listOfHam, HashMap<String, Double> wordMap) throws IOException{
         CalculateProb(listOfSpam, wordMap);
         CalculateProb(listOfHam, wordMap);
     }
+
+    /**
+     * Determine the probability of a file being spam using Naive Bayes, one word at a time.
+     *
+     * @param listOfFiles Folder of files to have spam probability computed.
+     * @param wordMap Word Map of spam words, and their probabilities of being spam
+     * @throws IOException
+     */
     private void CalculateProb(File[] listOfFiles, HashMap<String, Double> wordMap) throws IOException {
         for (File file : listOfFiles) {
             String path = file.getPath();
