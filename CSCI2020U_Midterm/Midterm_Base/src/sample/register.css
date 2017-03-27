@@ -1,0 +1,12 @@
+.bg {
+    -fx-background-color: #D8D8EA;
+}
+
+.textArea{
+    -fx-background-color: #F0F0F0;
+    -fx-font-color: #202020;
+    -fx-font-family: monospace;
+}
+.code {
+    -fx-font-family: monospace;
+}

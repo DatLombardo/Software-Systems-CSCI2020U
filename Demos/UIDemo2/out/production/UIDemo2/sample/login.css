@@ -1,0 +1,11 @@
+.button {
+  /* This is a CSS class named 'button' */
+  -fx-text-fill: white;
+  -fx-font-weight: bold;
+  -fx-background-color: linear-gradient(#857DB1, #5D5393);
+  -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
+}
+
+.code {
+  -fx-font-family: monospace;
+}

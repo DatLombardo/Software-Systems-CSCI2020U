@@ -45,7 +45,7 @@ public class Main extends Application {
 
         draw(root);
 
-        //drawAnimation(root);
+        drawAnimation(root);
     }
 
     private void draw(Group group) {
@@ -101,8 +101,8 @@ public class Main extends Application {
         gc.fillText("CSCI2020u", 450, 550);
 
         // image
-        //Image image = new Image(getClass().getClassLoader().getResource("images/disk.png").toString());
-        //gc.drawImage(image, 685, 400);
+        Image image = new Image(getClass().getClassLoader().getResource("images/disk.png").toString());
+        gc.drawImage(image, 685, 400);
     }
 
     private Timeline timeline = null;

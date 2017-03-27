@@ -1,0 +1,16 @@
+.tree-view, .tree-cell {
+  -fx-background-color: #F0F0F0;
+  -fx-text-fill: #202020;
+}
+
+.text-area .content {
+  -fx-background-color: #F0F0F0;
+}
+
+.text-area {
+  -fx-font-family: monospace;
+  -fx-font-size:  12pt;
+  -fx-highlight-fill: #F0F0F0;
+  -fx-highlight-text-fill: #202020;
+  -fx-text-fill: #202020;
+}

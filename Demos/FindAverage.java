@@ -118,4 +118,3 @@ public class FindAverage {
     }
   }
 }
->>>>>>> f470139d263986286f1c2614aeb3f2fca9124b3b

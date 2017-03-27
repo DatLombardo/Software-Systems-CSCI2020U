@@ -8,29 +8,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-<<<<<<< HEAD
-import java.lang.String;
-import java.time.LocalDate;
-
-public class Controller {
-    @FXML private TextField usernameField;
-    @FXML private PasswordField passwordField;
-    @FXML private TextField fullNameField;
-    @FXML private TextField emailField;
-    @FXML private TextField phoneField;
-    @FXML private DatePicker datePicker;
-
-    @FXML private TextArea editor;
-
-
-    public void register(ActionEvent e) {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        String fullName = fullNameField.getText();
-        String email = emailField.getText();
-        String phone = phoneField.getText();
-        String dob = datePicker.getEditor().getText();
-=======
 
 public class Controller {
     @FXML private TextField usernameField;
@@ -89,22 +66,13 @@ public class Controller {
         String password1 = password1Field.getText();
         String password2 = password2Field.getText();
         String email = emailField.getText();
->>>>>>> f470139d263986286f1c2614aeb3f2fca9124b3b
 
         // do something with this data
 
         System.out.println("Register:");
         System.out.println("\tUsername:   " + username);
-<<<<<<< HEAD
-        System.out.println("\tPassword:  " + password);
-        System.out.println("\tFullName:   " + fullName);
-        System.out.println("\tE-Mail:     " + email);
-        System.out.println("\tPhone #:   " + phone);
-        System.out.println("\tDate of Birth:   " + dob);
-=======
         System.out.println("\tPassword1:  " + password1);
         System.out.println("\tPassword2:  " + password2);
         System.out.println("\tE-Mail:     " + email);
->>>>>>> f470139d263986286f1c2614aeb3f2fca9124b3b
     }
 }

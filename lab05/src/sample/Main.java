@@ -30,10 +30,6 @@ public class Main extends Application {
         sidColumn = new TableColumn<>("Student ID");
         sidColumn.setMinWidth(100);
         sidColumn.setCellValueFactory(new PropertyValueFactory<>("sid"));
-        sidColumn.setCellFactory(TextFieldTableCell.<StudentRecord>forTableColumn());
-        sidColumn.setOnEditCommit((TableColumn.CellEditEvent<StudentRecord, String> event) -> {
-            ((StudentRecord)event.getTableView().getItems().get(event.getTablePosition().getRow())).setSid(event.getNewValue());
-        });
 
         TableColumn<StudentRecord,Double> midtermColumn = null;
         midtermColumn = new TableColumn<>("Midterm");
@@ -41,28 +37,24 @@ public class Main extends Application {
         midtermColumn.setCellValueFactory(new PropertyValueFactory<>("midterm"));
 
         TableColumn<StudentRecord,Double> assignColumn = null;
-        assignColumn = new TableColumn<>("Midterm");
+        assignColumn = new TableColumn<>("Assignment");
         assignColumn.setMinWidth(100);
         assignColumn.setCellValueFactory(new PropertyValueFactory<>("assign"));
 
         TableColumn<StudentRecord,Double> fExamColumn = null;
         fExamColumn = new TableColumn<>("Final Exam");
         fExamColumn.setMinWidth(100);
-        fExamColumn.setCellValueFactory(new PropertyValueFactory<>("fExam"));
+        fExamColumn.setCellValueFactory(new PropertyValueFactory<>("exam"));
 
         TableColumn<StudentRecord,Double> finalMarkColumn = null;
-        finalMarkColumn = new TableColumn<>("Final Exam");
+        finalMarkColumn = new TableColumn<>("Final Mark");
         finalMarkColumn.setMinWidth(100);
         finalMarkColumn.setCellValueFactory(new PropertyValueFactory<>("finalMark"));
 
         TableColumn<StudentRecord,String> letterGradeColumn = null;
-        letterGradeColumn = new TableColumn<>("Student ID");
+        letterGradeColumn = new TableColumn<>("Letter Grade");
         letterGradeColumn.setMinWidth(100);
-        letterGradeColumn.setCellValueFactory(new PropertyValueFactory<>("sid"));
-        letterGradeColumn.setCellFactory(TextFieldTableCell.<StudentRecord>forTableColumn());
-        letterGradeColumn.setOnEditCommit((TableColumn.CellEditEvent<StudentRecord, String> event) -> {
-            ((StudentRecord)event.getTableView().getItems().get(event.getTablePosition().getRow())).setLetterGrade(event.getNewValue());
-        });
+        letterGradeColumn.setCellValueFactory(new PropertyValueFactory<>("letterGrade"));
 
 
         table.getColumns().add(sidColumn);
@@ -78,13 +70,13 @@ public class Main extends Application {
         editArea.setVgap(10);
         editArea.setHgap(10);
 
-        /* arrange all components in the main user interface */
         layout = new BorderPane();
         layout.setCenter(table);
         layout.setBottom(editArea);
 
         Scene scene = new Scene(layout, 600, 600);
         primaryStage.setScene(scene);
+        primaryStage.setTitle("Lab 05");
         primaryStage.show();
     }
 
