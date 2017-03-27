@@ -132,7 +132,7 @@ public class Main extends Application {
         editArea.setPadding(new Insets(10, 10, 10, 10));
         editArea.setVgap(10);
         editArea.setHgap(10);
-        
+
         Label sidLabel = new Label("SID:");
         editArea.add(sidLabel, 0, 0);
         TextField sidField = new TextField();
