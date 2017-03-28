@@ -1,0 +1,46 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.json', 
+            name: 'json', 
+            version: '20151123'
+}
+
+task(runJSON, dependsOn: 'classes', type: JavaExec) {
+    main = 'csci2020u.samples.sockets.YouTubeSearch'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task(runXML, dependsOn: 'classes', type: JavaExec) {
+    main = 'csci2020u.samples.sockets.DownloadBikeData'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task(runChatServer, dependsOn: 'classes', type: JavaExec) {
+    main = 'csci2020u.samples.sockets.ChatServer'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task(runChatClient, dependsOn: 'classes', type: JavaExec) {
+    main = 'csci2020u.samples.sockets.ChatClient'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task(runHTTPClient, dependsOn: 'classes', type: JavaExec) {
+    main = 'csci2020u.samples.sockets.HttpClient'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task(runHTTPClient2, dependsOn: 'classes', type: JavaExec) {
+    main = 'csci2020u.samples.sockets.HttpClient2'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task(runHTTPServer, dependsOn: 'classes', type: JavaExec) {
+    main = 'csci2020u.samples.sockets.HttpServer'
+    classpath = sourceSets.main.runtimeClasspath
+}
