@@ -25,7 +25,9 @@ public class BullitenHandler implements Runnable {
             message = in.readLine();
             if (message != null){
                 System.out.println(message);
-
+                FileWriter fw = new FileWriter("messages.txt");
+                fw.write(message);
+                fw.close();
             }
             OutputStream os = socket.getOutputStream();
             out = new DataOutputStream(os);
