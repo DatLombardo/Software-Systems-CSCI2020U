@@ -22,15 +22,14 @@ public class BullitenHandler implements Runnable {
             InputStream is = socket.getInputStream();
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(is));
-            message = in.readLine();
-            if (message != null){
+            OutputStream os = socket.getOutputStream();
+            out = new DataOutputStream(os);
+            while ((message = in.readLine()) != null){
                 System.out.println(message);
                 FileWriter fw = new FileWriter("messages.txt");
                 fw.write(message);
                 fw.close();
             }
-            OutputStream os = socket.getOutputStream();
-            out = new DataOutputStream(os);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -35,7 +35,6 @@ public class BullitenClient extends Application{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Bulletin Board Client");
         TextArea textArea = new TextArea();
-
         Button buttonSend = new Button("Send");
         buttonSend.setMinWidth(50);
 
@@ -73,10 +72,21 @@ public class BullitenClient extends Application{
                 String mess = messageField.getText();
 
                 messageSent = (uName + mess);
-
                 usernameField.setText("");
                 messageField.setText("");
-                //DataOutputStream dos = new DataOutputStream();
+                primaryStage.show();
+                try{
+                    stdin = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+                    //stdin = new BufferedReader(new InputStreamReader(System.in));
+                    os = new PrintWriter(sock.getOutputStream());
+                    os.write(messageSent);
+                    os.flush();
+                    String returnMess;
+                    returnMess = stdin.readLine();
+                    System.out.println(returnMess);
+                }catch(IOException e3){
+                    e3.printStackTrace();
+                }
                 os.write(messageSent);
                 os.flush();
             });
@@ -94,8 +104,6 @@ public class BullitenClient extends Application{
         try {
             sock = new Socket("localhost", 3333);
             System.out.println("Connected");
-            stdin = new BufferedReader(new InputStreamReader(System.in));
-            os = new PrintWriter(sock.getOutputStream());
             launch(args);
         } catch (Exception e) {
             System.err.println("Cannot connect to the server, try again later.");

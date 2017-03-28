@@ -8,8 +8,7 @@ import java.net.*;
  */
 public class ClientConnectionHandler implements Runnable {
     private Socket socket;
-    //private DataOutputStream out;
-    private PrintWriter out;
+    private BufferedReader requestInput = null;
 
     public ClientConnectionHandler(Socket socket) {
         this.socket = socket;
@@ -17,42 +16,41 @@ public class ClientConnectionHandler implements Runnable {
 
     public void run() {
         try {
-            InputStream is = socket.getInputStream();
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(is)
-            );
-            OutputStream os = socket.getOutputStream();
-            //out = new DataOutputStream(os);
-            out = new PrintWriter(socket.getOutputStream());
+            requestInput = new BufferedReader(new InputStreamReader(
+                    socket.getInputStream()));
+            String command;
+            String fileName;
+            while ((command = requestInput.readLine()) != null) {
+                switch (command.toUpperCase()) {
+                    case "DIR":
+                        //Function for Displaying Dir
+                        break;
+                    case "UPLOAD":
+                        System.out.println("Upload");
+                        //Get next input arguement
+                        while ((fileName = requestInput.readLine()) != null) {
+                            //Function to Download from client, passing filename
+                            System.out.println(fileName);
+                        }
+                        break;
+                    case "DOWNLOAD":
+                        //Get next input arguement
+                        while ((fileName = requestInput.readLine()) != null) {
+                            //Function to upload to client, passing filename
+                            System.out.println(fileName);
+                        }
+                        break;
 
-            // Command | filename
-            System.out.println("reading");
-            String request = in.readLine();
-            System.out.println("reading2");
+                    default:
+                        System.out.println("Bad Input");
+                        break;
+                }
+                requestInput.close();
+                break;
+            }
 
-            String[] requestParts = request.split(" ");
-            String command = requestParts[0];
-            String filename = requestParts[1];
-            System.out.println(command);
-            if (command.equalsIgnoreCase("DIR")) {
-                out.write("Dir Selected");
-                out.flush();
-            }
-            else if (command.equalsIgnoreCase("UPLOAD")) {
-                out.write("Upload selected");
-                out.flush();
-            }
-            else if (command.equalsIgnoreCase("DOWNLOAD")) {
-                out.write("Download selected");
-                out.flush();
-            }
-            else{
-                out.write("Incorrect Usage: [UPLOAD/DOWNLOAD] [filename] or [DIR]");
-                out.flush();
-            }
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
     }
 

@@ -9,35 +9,59 @@ import java.net.*;
  */
 public class ClientFTP {
     private static Socket sock;
-    protected static BufferedReader inny;
-    private static PrintWriter os;
+    protected static BufferedReader input;
+    private static PrintWriter output;
+    protected static String fileName;
 
     public static void main(String[] args) throws IOException {
-        String command = args[0];
-        String filename = "-";
-        if (args[1] != null) {
-            filename = args[1];
-        }
-
         try {
             sock = new Socket("localhost", 3333);
             System.out.println("Connected");
-            os = new PrintWriter(sock.getOutputStream());
-            os.write(command + " " + filename);
-            os.flush();
-            InputStream is = sock.getInputStream();
-            inny = new BufferedReader(new InputStreamReader(is));
-            while(inny.readLine() == null) {
-                System.out.println("Waiting Response");
-            }
-            String returnMess = inny.readLine();
-            System.out.println(returnMess);
+            input = new BufferedReader(new InputStreamReader(System.in));
         } catch (IOException e) {
-            System.err.println("Cannot connect to the server, try again later.");
+            System.out.println("Connection Failed");
             sock.close();
             System.exit(0);
         }
 
+        output = new PrintWriter(sock.getOutputStream());
+
+        try{
+            switch(getCommand()){
+                case "DIR":
+                    output.println("DIR");
+                    output.flush();
+                    //Dir Func
+                    break;
+                case "UPLOAD":
+                    output.println("UPLOAD");
+                    output.flush();
+                    System.out.println("Enter file to upload");
+                    fileName = input.readLine();
+                    output.println(fileName);
+                    output.flush();
+                    //Upload Func
+                    break;
+                case "DOWNLOAD":
+                    output.println("DOWNLOAD");
+                    output.flush();
+                    System.out.println("Enter file to download");
+                    fileName = input.readLine();
+                    output.println(fileName);
+                    output.flush();
+                    //Download Func
+                    break;
+            }
+        }catch(IOException e1){
+            e1.printStackTrace();
+
+        }
+
         sock.close();
+    }
+
+    public static String getCommand() throws IOException {
+        System.out.println("Usage: COMMAND (DIR, UPLOAD, DOWNLOAD)");
+        return input.readLine();
     }
 }
