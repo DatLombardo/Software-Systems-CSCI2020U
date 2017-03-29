@@ -9,20 +9,19 @@ import java.net.*;
 public class ServerFTP {
     protected ServerSocket serverSocket;
     private static Socket clientSocket = null;
-    public static int SERVER_PORT = 3333;
+    public static int port = 3333;
 
     public ServerFTP() throws IOException {
-        serverSocket = new ServerSocket(SERVER_PORT);
+        serverSocket = new ServerSocket(port);
         System.out.println("Server Initialized");
     }
 
     public void handleRequests() throws IOException {
-        System.out.println("Server FTP is listening on port: " + SERVER_PORT);
+        System.out.println("Server FTP is listening on port: " + port);
         while (true) {
             clientSocket = serverSocket.accept();
             System.out.println("Accepted connection : " + clientSocket);
-            ClientConnectionHandler handler =
-                    new ClientConnectionHandler(clientSocket);
+            ClientConnectionHandler handler = new ClientConnectionHandler(clientSocket);
             Thread handlerThread = new Thread(handler);
             handlerThread.start();
         }
