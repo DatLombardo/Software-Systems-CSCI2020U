@@ -174,16 +174,18 @@ public class ClientFTP extends Application {
             try {
                 //Notify handler that the command selected is upload, forces handler to begin
                 //waiting for the filename and begins reading upload buffer
-                output.println("UPLOAD");
-                output.flush();
-                output.println(clientRequest[0]);
-                output.flush();
-                giveUpload(clientRequest[0]);
-                sock.close();
+                if (clientRequest[0] != null) {
+                    output.println("UPLOAD");
+                    output.flush();
+                    output.println(clientRequest[0]);
+                    output.flush();
+                    giveUpload(clientRequest[0]);
+                    sock.close();
+                    System.exit(0);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.exit(0);
         });
 
         Button downButton = new Button("Download");
@@ -191,20 +193,20 @@ public class ClientFTP extends Application {
         downButton.setMinHeight(50);
         downButton.setOnAction(action -> {
             try {
-                //Notify handler that the command selected is download, forces handler to begin
-                //waiting for the filename to begin sending the file
-                output.println("DOWNLOAD");
-                output.flush();
-                output.println(serverRequest[0]);
-                output.flush();
-                getDownload();
-                sock.close();
-                //Download Func
-                //System.exit(0);
+                if (serverRequest[0] != null) {
+                    //Notify handler that the command selected is download, forces handler to begin
+                    //waiting for the filename to begin sending the file
+                    output.println("DOWNLOAD");
+                    output.flush();
+                    output.println(serverRequest[0]);
+                    output.flush();
+                    getDownload();
+                    sock.close();
+                    System.exit(0);
+                }
             }catch (IOException e){
                 e.printStackTrace();
             }
-            System.exit(0);
         });
 
         gridPane.add(upButton,1,1);
