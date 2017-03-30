@@ -11,11 +11,17 @@ public class ClientConnectionHandler implements Runnable {
     private BufferedReader requestInput = null;
     public final String sharedPath = "/home/michael/Desktop/Java/Assignment2/shared/";
 
-
+    /**
+     * Declares the client when a client connects, each client on seperate thread
+     * @param socket
+     */
     public ClientConnectionHandler(Socket socket) {
         this.socket = socket;
     }
 
+    /**
+     * Continuously waiting for client to send a request for information
+     */
     public void run() {
         try {
             requestInput = new BufferedReader(new InputStreamReader(
@@ -24,9 +30,9 @@ public class ClientConnectionHandler implements Runnable {
             String fileName;
             while ((command = requestInput.readLine()) != null) {
                 switch (command.toUpperCase()) {
-                    case "DIR":
-                        //Function for Displaying Dir
-                        break;
+
+                    //Dir not included as UI shows the directory of shared
+
                     case "UPLOAD":
                         System.out.println("Upload");
                         //Get next input arguement
@@ -44,8 +50,8 @@ public class ClientConnectionHandler implements Runnable {
                             giveDownload(fileName);
                         }
                         break;
-
                     default:
+                        //Never Reached with UI added
                         System.out.println("Bad Input");
                         break;
                 }
@@ -58,10 +64,15 @@ public class ClientConnectionHandler implements Runnable {
         }
     }
 
+    /**
+     * Initiates the download of a file from the client
+     */
     public void getUpload(){
         System.out.println("Getting File");
         try {
             int bytesRead;
+
+            //Setup data stream for receiving file / initialize buffer size
             DataInputStream clientGet = new DataInputStream(socket.getInputStream());
             String fileName = clientGet.readUTF();
             long size = clientGet.readLong();
@@ -77,34 +88,37 @@ public class ClientConnectionHandler implements Runnable {
                 outStream.write(buffer, 0, bytesRead);
                 size -= bytesRead;
             }
-            System.out.println("Upload Complete");
-            //
+            System.out.println("Upload of " + fileName + "Complete");
             outStream.close();
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
     }
+    /**
+     * Initiates upload of file to the client, socket is closed.
+     * @param fileName
+     */
     public void giveDownload(String fileName){
         System.out.println("Giving File");
         try {
             //Initialize File and get it's length, store into byte array
             File file = new File(sharedPath + fileName);
-            byte[] mybytearray = new byte[(int) file.length()];
+            byte[] byteSize = new byte[(int) file.length()];
 
             //Initialize streams
             FileInputStream fileInput = new FileInputStream(file);
             DataInputStream dataInput = new DataInputStream(new BufferedInputStream(fileInput));
-            dataInput.readFully(mybytearray, 0, mybytearray.length);
+            dataInput.readFully(byteSize, 0, byteSize.length);
             OutputStream outStream = socket.getOutputStream();
 
             //Sending file name and file size to the server
             DataOutputStream dataOutput = new DataOutputStream(outStream);
             dataOutput.writeUTF(file.getName());
-            dataOutput.writeLong(mybytearray.length);
-            dataOutput.write(mybytearray, 0, mybytearray.length);
+            dataOutput.writeLong(byteSize.length);
+            dataOutput.write(byteSize, 0, byteSize.length);
             dataOutput.flush();
-            System.out.println("File "+fileName+" sent to client.");
+            System.out.println("File " + fileName + " sent to client.");
 
           } catch (Exception e) {
                 e.printStackTrace();

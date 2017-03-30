@@ -35,6 +35,7 @@ public class Controller {
                 TreeItem<ProjectFile> selectedItem = (TreeItem<ProjectFile>) newValue;
                 if (selectedItem != null) {
                     selectedFile = selectedItem.getValue().getFile();
+                    System.out.println(selectedFile);
 
                     // load the contents of the file into the editor
                     String content = readFileContents(selectedFile);
